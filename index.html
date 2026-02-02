@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>10 Bridge Challenge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- ============================================
+       HERO SECTION
+       ============================================ -->
+  <header class="hero" id="hero">
+    <div class="hero__bg">
+      <svg class="hero__grid" aria-hidden="true" width="100%" height="100%">
+        <defs>
+          <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+            <path d="M 60 0 L 0 0 0 60" fill="none" stroke="currentColor" stroke-width="0.5" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#grid)" />
+      </svg>
+      <div class="hero__gradient"></div>
+    </div>
+
+    <div class="container hero__inner">
+      <h1 class="hero__title">10 Bridge Challenge</h1>
+      <p class="hero__sub">
+        A finite experiment to sell 10 bridges.<br>
+        A record of what's learned between start and finish.
+      </p>
+
+      <div class="hero__stats">
+        <div class="stat">
+          <span class="stat__number" id="daysElapsed">0</span>
+          <span class="stat__label">Days Elapsed</span>
+        </div>
+      </div>
+
+      <nav class="hero__nav">
+        <a href="#challenge" class="btn btn--primary">The Challenge</a>
+        <a href="#bridges" class="btn btn--ghost">The Bridges</a>
+        <a href="#latest" class="btn btn--ghost">Latest</a>
+      </nav>
+    </div>
+
+    <div class="hero__scroll">
+      <span>Scroll</span>
+      <svg width="16" height="24" viewBox="0 0 16 24" fill="none">
+        <rect x="1" y="1" width="14" height="22" rx="7" stroke="currentColor" stroke-width="1.5" />
+        <circle class="hero__scroll-dot" cx="8" cy="8" r="2" fill="currentColor" />
+      </svg>
+    </div>
+  </header>
+
+  <!-- ============================================
+       THE CHALLENGE
+       ============================================ -->
+  <section class="section challenge" id="challenge">
+    <div class="container">
+      <div class="section__header">
+        <span class="section__number">01</span>
+        <h2 class="section__title">The Challenge</h2>
+      </div>
+
+      <div class="challenge__list">
+        <div class="challenge-item">
+          <div class="challenge-item__icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 16v-4" />
+              <path d="M12 8h.01" />
+            </svg>
+          </div>
+          <div class="challenge-item__info">
+            <strong>Objective</strong>
+            <span>Sell ten bridges.</span>
+          </div>
+        </div>
+
+        <div class="challenge-item">
+          <div class="challenge-item__icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+              <polyline points="22 4 12 14.01 9 11.01" />
+            </svg>
+          </div>
+          <div class="challenge-item__info">
+            <strong>Definition of "Sold"</strong>
+            <span>A signed purchase order accepted by the manufacturer.</span>
+          </div>
+        </div>
+
+        <div class="challenge-item">
+          <div class="challenge-item__icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="1" x2="12" y2="23" />
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+            </svg>
+          </div>
+          <div class="challenge-item__info">
+            <strong>Compensation</strong>
+            <span>No base pay. Compensation is a single $25,000 commission released only after the tenth bridge is
+              sold.</span>
+          </div>
+        </div>
+
+        <div class="challenge-item">
+          <div class="challenge-item__icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+          </div>
+          <div class="challenge-item__info">
+            <strong>Context</strong>
+            <span>The bridges are manufactured by E&amp;H Manufacturing in West Virginia and can be shipped anywhere in
+              the US via flatbed trailer.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       THE BRIDGES
+       ============================================ -->
+  <section class="section bridges" id="bridges">
+    <div class="container">
+      <div class="section__header">
+        <span class="section__number">02</span>
+        <h2 class="section__title">The Bridges</h2>
+      </div>
+
+      <div class="bridges__text">
+        <p>The bridges involved in this project are prefabricated steel-and-timber vehicle bridges designed for quick
+          installation in environments where permanent infrastructure is limited or unavailable. They are commonly used
+          for rural access roads, industrial sites, energy operations, construction access, and temporary or replacement
+          crossings.</p>
+
+        <p>These bridges are delivered as complete units, installed on simple foundations, and are typically operational
+          within hours rather than months. They are engineered to standard load ratings and adapted to a wide range of
+          site conditions, making them a practical solution in situations where speed, access, and reliability matter
+          more than permanence.</p>
+      </div>
+
+      <!-- ============================================
+           BRIDGE GALLERY — Slider
+
+           HOW TO ADD/EDIT SLIDES:
+           1. Add images to the /images/ folder
+           2. Copy a slider__slide block below
+           3. Update the src and the caption text
+           4. Arrows + counter update automatically
+           ============================================ -->
+      <div class="slider" id="slider">
+        <div class="slider__track">
+          <!-- SLIDE 1 -->
+          <div class="slider__slide">
+            <div class="slider__image">
+              <img src="images/30-foot-bridge-panel.webp" alt="30-foot bridge panel">
+            </div>
+            <p class="slider__caption">A 30-foot prefabricated bridge panel.</p>
+          </div>
+          <!-- SLIDE 2 -->
+          <div class="slider__slide">
+            <div class="slider__image">
+              <img src="images/bridge-placeholder-2.jpg" alt="Bridge being delivered on a flatbed trailer">
+            </div>
+            <p class="slider__caption">Bridges are delivered fully assembled via flatbed and set in place by crane.</p>
+          </div>
+          <!-- SLIDE 3 -->
+          <div class="slider__slide">
+            <div class="slider__image">
+              <img src="images/bridge-placeholder-3.jpg" alt="Bridge crossing a stream on a timber site">
+            </div>
+            <p class="slider__caption">A temporary crossing installed for a logging operation in West Virginia.</p>
+          </div>
+          <!-- SLIDE 4 -->
+          <div class="slider__slide">
+            <div class="slider__image">
+              <img src="images/bridge-placeholder-4.jpg" alt="Completed bridge installation">
+            </div>
+            <p class="slider__caption">Operational within hours — no engineered foundations required for most
+              conditions.</p>
+          </div>
+
+          <!-- To add more slides, copy a slider__slide block:
+          <div class="slider__slide">
+            <div class="slider__image">
+              <img src="images/your-image.jpg" alt="Description">
+            </div>
+            <p class="slider__caption">Your caption here.</p>
+          </div>
+          -->
+        </div>
+
+        <!-- Controls -->
+        <button class="slider__btn slider__btn--prev" id="sliderPrev" aria-label="Previous slide">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+        <button class="slider__btn slider__btn--next" id="sliderNext" aria-label="Next slide">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 6 15 12 9 18" />
+          </svg>
+        </button>
+
+        <div class="slider__counter">
+          <span id="sliderCurrent">1</span> / <span id="sliderTotal">4</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       LATEST — Posts Section
+
+       HOW TO ADD A NEW POST:
+       1. Copy one of the post templates below
+       2. Give it a unique id (e.g. id="post-3")
+       3. Set the data-type: "text", "video", or "image"
+       4. Fill in date, tag, title, and content
+       5. For videos: use an iframe embed in the post__embed div
+       6. For images: use an img tag in the post__media div
+       7. Posts show newest first (put new ones at the top)
+       ============================================ -->
+  <section class="section latest" id="latest">
+    <div class="container">
+      <div class="section__header">
+        <span class="section__number">03</span>
+        <h2 class="section__title">Latest</h2>
+      </div>
+
+      <div class="posts__grid" id="postsGrid">
+
+        <!-- POST 5 — newest first -->
+        <article class="post" id="post-5" data-type="text">
+          <div class="post__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="post__meta">
+              <span class="post__date">2026-02-28</span>
+              <span class="post__tag">Update</span>
+            </div>
+            <h3 class="post__title">Documenting the process</h3>
+            <p class="post__preview">I built this website with Claude Code. I thought it would be cool to document the
+              ...</p>
+            <div class="post__toggle">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </div>
+          </div>
+          <div class="post__body">
+            <div class="post__content">
+              <p>I built this website with Claude Code. I thought it would be cool to document the process of selling 10
+                bridges.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- POST 4 — video type -->
+        <article class="post" id="post-4" data-type="video">
+          <div class="post__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="post__meta">
+              <span class="post__date">2026-02-22</span>
+              <span class="post__tag post__tag--video">Video</span>
+            </div>
+            <h3 class="post__title">What a Bridge Install Actually Looks Like</h3>
+            <p class="post__preview">A quick video showing how one of these bridges goes from flatbed to functional in a
+              few hours...</p>
+            <div class="post__toggle">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </div>
+          </div>
+          <div class="post__body">
+            <div class="post__embed">
+              <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Bridge installation timelapse"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+              </iframe>
+            </div>
+            <div class="post__content">
+              <p>This isn't from one of my sales — it's an older install from the manufacturer's archive. But it shows
+                the process clearly: the bridge arrives fully assembled on a flatbed, a crane sets it on the abutments,
+                and a crew bolts it down. The whole thing was operational by the end of the day.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- POST 3 — image type -->
+        <article class="post" id="post-3" data-type="image">
+          <div class="post__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="post__meta">
+              <span class="post__date">2026-02-18</span>
+              <span class="post__tag post__tag--image">Photo</span>
+            </div>
+            <h3 class="post__title">Found a Prospect Site in Rural Virginia</h3>
+            <p class="post__preview">A timber road crossing that's been out of service for two years...</p>
+            <div class="post__toggle">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </div>
+          </div>
+          <div class="post__body">
+            <div class="post__content">
+              <p>Drove out to a site in Pocahontas County where a timber company has been routing trucks 14 miles around
+                a failed crossing. The old bridge was a concrete slab that cracked during a flood in 2024. They've been
+                living with the detour because they assumed replacement would take 6+ months and a civil engineering
+                study.</p>
+              <p>When I explained these bridges can be installed in a day with no engineered foundations required for
+                most conditions, the site manager asked me to send specs. Following up this week.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- POST 2 — text type -->
+        <article class="post" id="post-2" data-type="text">
+          <div class="post__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="post__meta">
+              <span class="post__date">2026-02-10</span>
+              <span class="post__tag">Update</span>
+            </div>
+            <h3 class="post__title">Who Actually Buys Bridges?</h3>
+            <p class="post__preview">Mapping out the buyer landscape before making any calls...</p>
+            <div class="post__toggle">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </div>
+          </div>
+          <div class="post__body">
+            <div class="post__content">
+              <p>Before picking up the phone, I spent a few days trying to understand who actually needs a prefabricated
+                vehicle bridge. The answer is more varied than I expected:</p>
+              <p><strong>Timber and logging companies</strong> — need access roads across streams and ravines. Crossings
+                wash out regularly. Speed matters because downtime costs money.</p>
+              <p><strong>Oil and gas / energy operations</strong> — well pads and pipeline rights-of-way often need
+                temporary crossings that can handle heavy equipment.</p>
+              <p><strong>Counties and municipalities</strong> — rural bridges fail all the time, and the permitting and
+                construction timeline for a traditional replacement can stretch past a year.</p>
+              <p><strong>Private landowners</strong> — ranches, farms, and large estates sometimes need vehicle
+                crossings over creeks or drainage channels.</p>
+              <p><strong>Construction and mining</strong> — job site access where no road exists yet.</p>
+              <p>The common thread: people who need to cross something with vehicles and can't wait for a traditional
+                bridge. That's the pitch.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- POST 1 — oldest -->
+        <article class="post" id="post-1" data-type="text">
+          <div class="post__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="post__meta">
+              <span class="post__date">2026-02-01</span>
+              <span class="post__tag">Update</span>
+            </div>
+            <h3 class="post__title">Day One</h3>
+            <p class="post__preview">The challenge starts today. Ten bridges, no base pay, one commission at the end...
+            </p>
+            <div class="post__toggle">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </div>
+          </div>
+          <div class="post__body">
+            <div class="post__content">
+              <p>This is the beginning. I've agreed to sell ten prefabricated vehicle bridges for E&amp;H Manufacturing.
+                No salary, no draw, no base pay of any kind. The only compensation is a single $25,000 commission that
+                releases after the tenth bridge sells.</p>
+              <p>I don't have a background in bridge sales, construction, or infrastructure. I'm starting from zero — no
+                leads, no pipeline, no industry contacts. This site will document whatever happens between now and
+                bridge number ten, or whatever I learn if I never get there.</p>
+              <p>First step: figure out who buys bridges and why.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- Empty state — auto-hidden when posts exist -->
+        <div class="posts__empty" id="postsEmpty" style="display:none;">
+          <div class="posts__empty-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+            </svg>
+          </div>
+          <p class="posts__empty-title">Nothing posted yet</p>
+          <p class="posts__empty-text">Updates will appear here as the challenge progresses.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p class="footer__text">10 Bridge Challenge</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
