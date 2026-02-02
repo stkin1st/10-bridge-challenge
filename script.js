@@ -143,29 +143,71 @@ function initSlider() {
   const nextBtn = document.getElementById('sliderNext');
   const currentEl = document.getElementById('sliderCurrent');
   const totalEl = document.getElementById('sliderTotal');
+  const dotsContainer = document.getElementById('sliderDots');
 
   if (!track || slides.length === 0) return;
 
   let index = 0;
   const count = slides.length;
+  let autoTimer = null;
+  const AUTO_INTERVAL = 5000; // ms between auto-advance
 
   if (totalEl) totalEl.textContent = count;
 
-  function goTo(i) {
-    index = (i + count) % count; // wrap around
-    track.style.transform = 'translateX(-' + (index * 100) + '%)';
-    if (currentEl) currentEl.textContent = index + 1;
+  // Build dot indicators
+  const dots = [];
+  if (dotsContainer) {
+    for (let i = 0; i < count; i++) {
+      const dot = document.createElement('button');
+      dot.className = 'slider__dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+      dot.addEventListener('click', () => { goTo(i); resetAuto(); });
+      dotsContainer.appendChild(dot);
+      dots.push(dot);
+    }
   }
 
-  if (prevBtn) prevBtn.addEventListener('click', () => goTo(index - 1));
-  if (nextBtn) nextBtn.addEventListener('click', () => goTo(index + 1));
+  function goTo(i) {
+    index = (i + count) % count;
+    track.style.transform = 'translateX(-' + (index * 100) + '%)';
+    if (currentEl) currentEl.textContent = index + 1;
+    dots.forEach((d, di) => d.classList.toggle('active', di === index));
+  }
 
-  // Keyboard support
+  // Auto-advance
+  function startAuto() {
+    stopAuto();
+    autoTimer = setInterval(() => goTo(index + 1), AUTO_INTERVAL);
+  }
+
+  function stopAuto() {
+    if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+  }
+
+  function resetAuto() {
+    stopAuto();
+    startAuto();
+  }
+
+  startAuto();
+
+  // Pause on hover/focus
   const slider = document.getElementById('slider');
   if (slider) {
+    slider.addEventListener('mouseenter', stopAuto);
+    slider.addEventListener('mouseleave', startAuto);
+    slider.addEventListener('focusin', stopAuto);
+    slider.addEventListener('focusout', startAuto);
+  }
+
+  if (prevBtn) prevBtn.addEventListener('click', () => { goTo(index - 1); resetAuto(); });
+  if (nextBtn) nextBtn.addEventListener('click', () => { goTo(index + 1); resetAuto(); });
+
+  // Keyboard support
+  if (slider) {
     slider.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') goTo(index - 1);
-      if (e.key === 'ArrowRight') goTo(index + 1);
+      if (e.key === 'ArrowLeft') { goTo(index - 1); resetAuto(); }
+      if (e.key === 'ArrowRight') { goTo(index + 1); resetAuto(); }
     });
     slider.setAttribute('tabindex', '0');
   }
@@ -176,6 +218,7 @@ function initSlider() {
 
   track.addEventListener('touchstart', (e) => {
     touchStartX = e.changedTouches[0].screenX;
+    stopAuto();
   }, { passive: true });
 
   track.addEventListener('touchend', (e) => {
@@ -185,6 +228,7 @@ function initSlider() {
       if (diff > 0) goTo(index + 1);
       else goTo(index - 1);
     }
+    startAuto();
   }, { passive: true });
 
   // Handle broken placeholder images

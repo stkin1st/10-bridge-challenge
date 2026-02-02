@@ -5,6 +5,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>10 Bridge Challenge</title>
+  <meta name="description" content="One goal: sell 10 bridges. A documented record of what's learned between start and finish.">
+  <meta property="og:title" content="10 Bridge Challenge">
+  <meta property="og:description" content="One goal: sell 10 bridges. A documented record of what's learned between start and finish.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="images/truck-crossing-bridge.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="10 Bridge Challenge">
+  <meta name="twitter:description" content="One goal: sell 10 bridges. A documented record of what's learned between start and finish.">
+  <meta name="twitter:image" content="images/truck-crossing-bridge.webp">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -34,7 +44,7 @@
     <div class="container hero__inner">
       <h1 class="hero__title">10 Bridge Challenge</h1>
       <p class="hero__sub">
-        A finite experiment to sell 10 bridges.<br>
+        One goal: sell 10 bridges.<br>
         A record of what's learned between start and finish.
       </p>
 
@@ -156,6 +166,15 @@
           more than permanence.</p>
       </div>
 
+      <div class="bridges__cta">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15 3 21 3 21 9"/>
+          <line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+        <span>For specifications, pricing, and details visit <a href="https://eandhbridges.com" target="_blank" rel="noopener">eandhbridges.com</a></span>
+      </div>
+
       <!-- ============================================
            BRIDGE GALLERY — Slider
 
@@ -170,31 +189,51 @@
           <!-- SLIDE 1 -->
           <div class="slider__slide">
             <div class="slider__image">
-              <img src="images/30-foot-bridge-panel.webp" alt="30-foot bridge panel">
+              <img src="images/bridge-panel-in-progress.webp" alt="Bridge panel being fabricated">
             </div>
-            <p class="slider__caption">A 30-foot prefabricated bridge panel.</p>
+            <p class="slider__caption">A bridge panel in progress during fabrication.</p>
           </div>
           <!-- SLIDE 2 -->
           <div class="slider__slide">
             <div class="slider__image">
-              <img src="images/bridge-placeholder-2.jpg" alt="Bridge being delivered on a flatbed trailer">
+              <img src="images/single-finished-panel.webp" alt="A single finished bridge panel">
             </div>
-            <p class="slider__caption">Bridges are delivered fully assembled via flatbed and set in place by crane.</p>
+            <p class="slider__caption">A single finished bridge panel ready for delivery.</p>
           </div>
           <!-- SLIDE 3 -->
           <div class="slider__slide">
             <div class="slider__image">
-              <img src="images/bridge-placeholder-3.jpg" alt="Bridge crossing a stream on a timber site">
+              <img src="images/finished-bridge-panel.webp" alt="Completed bridge panel">
             </div>
-            <p class="slider__caption">A temporary crossing installed for a logging operation in West Virginia.</p>
+            <p class="slider__caption">A completed bridge panel.</p>
           </div>
           <!-- SLIDE 4 -->
           <div class="slider__slide">
             <div class="slider__image">
-              <img src="images/bridge-placeholder-4.jpg" alt="Completed bridge installation">
+              <img src="images/panels-on-flatbed.webp" alt="Bridge panels loaded on a flatbed trailer">
             </div>
-            <p class="slider__caption">Operational within hours — no engineered foundations required for most
-              conditions.</p>
+            <p class="slider__caption">Panels loaded on a flatbed trailer for delivery.</p>
+          </div>
+          <!-- SLIDE 5 -->
+          <div class="slider__slide">
+            <div class="slider__image">
+              <img src="images/three-panel-bridge.webp" alt="A three-panel bridge installed on site">
+            </div>
+            <p class="slider__caption">A three-panel bridge installed on site.</p>
+          </div>
+          <!-- SLIDE 6 -->
+          <div class="slider__slide">
+            <div class="slider__image">
+              <img src="images/skidder-crossing-bridge.webp" alt="Skidder crossing a bridge">
+            </div>
+            <p class="slider__caption">A skidder crossing a bridge in operation.</p>
+          </div>
+          <!-- SLIDE 7 -->
+          <div class="slider__slide">
+            <div class="slider__image">
+              <img src="images/truck-crossing-bridge.webp" alt="Truck crossing a bridge">
+            </div>
+            <p class="slider__caption">A truck crossing a bridge on a job site.</p>
           </div>
 
           <!-- To add more slides, copy a slider__slide block:
@@ -222,9 +261,11 @@
         </button>
 
         <div class="slider__counter">
-          <span id="sliderCurrent">1</span> / <span id="sliderTotal">4</span>
+          <span id="sliderCurrent">1</span> / <span id="sliderTotal">7</span>
         </div>
+
       </div>
+      <div class="slider__dots" id="sliderDots"></div>
     </div>
   </section>
 
