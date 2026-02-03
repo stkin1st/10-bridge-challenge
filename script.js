@@ -29,24 +29,21 @@ function updateDaysElapsed() {
 }
 
 // ──────────────────────────────────────────────
-// PROGRESS & PIPS
+// PUNCH CARD
 // ──────────────────────────────────────────────
-function updateProgress() {
-  const pct = Math.round((BRIDGES_SOLD / BRIDGES_TOTAL) * 100);
-  const barEl = document.getElementById('progressBar');
-
-  requestAnimationFrame(() => {
-    setTimeout(() => {
-      if (barEl) barEl.style.width = pct + '%';
-    }, 400);
-  });
-
-  document.querySelectorAll('.pip').forEach(pip => {
-    const bridgeNum = parseInt(pip.dataset.bridge, 10);
+function updatePunchCard() {
+  document.querySelectorAll('.punchcard__stamp').forEach(stamp => {
+    const bridgeNum = parseInt(stamp.dataset.bridge, 10);
     if (bridgeNum <= BRIDGES_SOLD) {
-      pip.classList.add('sold');
+      stamp.classList.add('punched');
     }
   });
+
+  // Update aria label
+  const card = document.querySelector('.punchcard');
+  if (card) {
+    card.setAttribute('aria-label', 'Bridges sold: ' + BRIDGES_SOLD + ' of ' + BRIDGES_TOTAL);
+  }
 }
 
 // ──────────────────────────────────────────────
@@ -248,7 +245,7 @@ function initSlider() {
 // ──────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   updateDaysElapsed();
-  updateProgress();
+  updatePunchCard();
   initPosts();
   initReveal();
   initSmoothScroll();

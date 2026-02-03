@@ -231,50 +231,51 @@ a:hover {
   font-weight: 500;
 }
 
-/* Progress bar */
-.hero__progress {
-  max-width: 32rem;
-  margin: 0 auto var(--sp-12);
+/* Punch card */
+.punchcard {
+  margin-bottom: var(--sp-10);
   animation: fadeInDown 0.6s 0.35s var(--ease) both;
 }
 
-.progress-track {
-  height: 6px;
-  background: var(--clr-border);
-  border-radius: 999px;
-  overflow: hidden;
-  margin-bottom: var(--sp-3);
+.punchcard__card {
+  display: inline-flex;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-5);
+  background: var(--clr-surface);
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
 }
 
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--clr-accent), var(--clr-success));
-  border-radius: 999px;
-  transition: width 1s var(--ease);
-}
-
-.progress-pips {
-  display: flex;
-  justify-content: space-between;
-}
-
-.pip {
-  font-family: var(--ff-mono);
-  font-size: 0.65rem;
-  color: var(--clr-text-faint);
-  width: 1.5rem;
-  height: 1.5rem;
+.punchcard__stamp {
+  width: 2rem;
+  height: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  transition: all var(--duration) var(--ease);
+  border-radius: var(--radius);
+  border: 1.5px dashed var(--clr-border);
+  background: var(--clr-surface-alt);
+  transition: all 0.4s var(--ease);
 }
 
-.pip.sold {
-  background: var(--clr-success);
-  color: #fff;
-  font-weight: 600;
+.punchcard__stamp span {
+  font-family: var(--ff-mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--clr-text-faint);
+  line-height: 1;
+}
+
+.punchcard__stamp.punched {
+  border-style: solid;
+  border-color: var(--clr-success);
+  background: var(--clr-success-soft);
+}
+
+.punchcard__stamp.punched span {
+  color: var(--clr-success);
+  font-weight: 700;
 }
 
 /* Nav buttons */
@@ -874,6 +875,12 @@ a:hover {
   font-size: var(--fs-xs);
 }
 
+.footer__text--sub {
+  color: var(--clr-text-faint);
+  margin-top: var(--sp-2);
+  font-size: var(--fs-xs);
+}
+
 
 /* -------------------------------------------
    10. ANIMATIONS
@@ -914,8 +921,18 @@ a:hover {
     font-size: var(--fs-2xl);
   }
 
-  .hero__progress {
-    max-width: 100%;
+  .punchcard__card {
+    gap: var(--sp-1);
+    padding: var(--sp-2) var(--sp-3);
+  }
+
+  .punchcard__stamp {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+
+  .punchcard__stamp span {
+    font-size: 0.625rem;
   }
 
   .section {
