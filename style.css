@@ -938,6 +938,10 @@ a:hover {
    11. RESPONSIVE
    ------------------------------------------- */
 @media (max-width: 639px) {
+  .hero__scroll {
+    display: none;
+  }
+
   .stat__number {
     font-size: var(--fs-2xl);
   }
