@@ -385,6 +385,27 @@ a:hover {
 /* -------------------------------------------
    6. CHALLENGE SECTION — Horizontal items
    ------------------------------------------- */
+.challenge__video {
+  margin-bottom: var(--sp-8);
+}
+
+.video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--clr-text);
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .challenge__list {
   display: flex;
   flex-direction: column;
