@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>10 Bridge Challenge — Site Evolution</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f5f2ed;
+      --surface: #ffffff;
+      --border: #e0dbd3;
+      --border-strong: #c8c0b4;
+      --text: #1a1a1a;
+      --text-muted: #6b6560;
+      --text-faint: #9e9890;
+      --accent: #2a2a2a;
+      --mono: 'IBM Plex Mono', 'Courier New', monospace;
+      --sans: 'Inter', system-ui, sans-serif;
+
+      --tag-design: #dbeafe;
+      --tag-design-text: #1e40af;
+      --tag-content: #dcfce7;
+      --tag-content-text: #166534;
+      --tag-technical: #fef3c7;
+      --tag-technical-text: #92400e;
+      --tag-feature: #f3e8ff;
+      --tag-feature-text: #6b21a8;
+      --tag-meta: #fce7f3;
+      --tag-meta-text: #9d174d;
+
+      --timeline-color: #d6d0c8;
+      --dot-empty: #d6d0c8;
+      --dot-filled: #1a1a1a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── TOP BAR ── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .topbar-title {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .topbar-title span {
+      color: var(--text);
+    }
+
+    .filter-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+
+    .filter-btn {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 3px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .filter-btn:hover { color: var(--text); border-color: var(--accent); }
+
+    .filter-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .filter-btn[data-filter="design"].active    { background: var(--tag-design-text); border-color: var(--tag-design-text); }
+    .filter-btn[data-filter="content"].active   { background: var(--tag-content-text); border-color: var(--tag-content-text); }
+    .filter-btn[data-filter="technical"].active { background: var(--tag-technical-text); border-color: var(--tag-technical-text); }
+    .filter-btn[data-filter="feature"].active   { background: var(--tag-feature-text); border-color: var(--tag-feature-text); }
+    .filter-btn[data-filter="meta"].active      { background: var(--tag-meta-text); border-color: var(--tag-meta-text); }
+
+    .search-input {
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 5px 10px;
+      border: 1px solid var(--border-strong);
+      border-radius: 3px;
+      background: var(--surface);
+      color: var(--text);
+      width: 180px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .search-input:focus { border-color: var(--accent); }
+    .search-input::placeholder { color: var(--text-faint); }
+
+    /* ── LAYOUT ── */
+    .layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 24px;
+      gap: 48px;
+      align-items: start;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      position: sticky;
+      top: 64px;
+    }
+
+    .sidebar-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      margin-bottom: 12px;
+    }
+
+    .sidebar-nav {
+      list-style: none;
+      border-left: 2px solid var(--border);
+    }
+
+    .sidebar-nav li a {
+      display: block;
+      padding: 5px 12px;
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      margin-left: -2px;
+      transition: all 0.15s;
+      line-height: 1.3;
+    }
+
+    .sidebar-nav li a:hover {
+      color: var(--text);
+      border-left-color: var(--border-strong);
+    }
+
+    .sidebar-nav li a.active {
+      color: var(--text);
+      border-left-color: var(--accent);
+      font-weight: 500;
+    }
+
+    /* ── CURRENT STATE BANNER ── */
+    .current-state {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 20px 24px;
+      margin-bottom: 40px;
+    }
+
+    .current-state-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .current-state-header .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      flex-shrink: 0;
+    }
+
+    .current-state-header h2 {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .current-state-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 8px;
+    }
+
+    .state-item {
+      font-size: 13px;
+      color: var(--text-muted);
+      padding: 6px 10px;
+      background: var(--bg);
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+      line-height: 1.4;
+    }
+
+    .state-item::before {
+      content: '✓';
+      font-family: var(--mono);
+      font-size: 11px;
+      color: #22c55e;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ── TIMELINE ── */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .section-block {
+      display: flex;
+      gap: 0;
+      position: relative;
+    }
+
+    /* timeline spine */
+    .section-block::before {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 32px;
+      bottom: -1px;
+      width: 2px;
+      background: var(--timeline-color);
+      z-index: 0;
+    }
+
+    .section-block:last-child::before { display: none; }
+
+    .timeline-marker {
+      flex-shrink: 0;
+      width: 32px;
+      padding-top: 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .timeline-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--dot-filled);
+      border: 2px solid var(--bg);
+      outline: 2px solid var(--dot-filled);
+      margin: 0 auto;
+    }
+
+    .section-card {
+      flex: 1;
+      margin-bottom: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: border-color 0.15s;
+    }
+
+    .section-card:hover { border-color: var(--border-strong); }
+
+    .section-card.hidden { display: none; }
+
+    .section-card.search-dim {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .card-header {
+      padding: 16px 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      user-select: none;
+    }
+
+    .card-header:hover { background: var(--bg); }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      flex: 1;
+      line-height: 1.3;
+    }
+
+    .card-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    .tag-design    { background: var(--tag-design);    color: var(--tag-design-text); }
+    .tag-content   { background: var(--tag-content);   color: var(--tag-content-text); }
+    .tag-technical { background: var(--tag-technical); color: var(--tag-technical-text); }
+    .tag-feature   { background: var(--tag-feature);   color: var(--tag-feature-text); }
+    .tag-meta      { background: var(--tag-meta);      color: var(--tag-meta-text); }
+
+    .card-chevron {
+      font-size: 12px;
+      color: var(--text-faint);
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+
+    .section-card.open .card-chevron { transform: rotate(180deg); }
+
+    .card-body {
+      display: none;
+      padding: 0 20px 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-card.open .card-body { display: block; }
+
+    .card-body p {
+      margin-top: 14px;
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .card-body ul, .card-body ol {
+      margin-top: 10px;
+      margin-left: 20px;
+    }
+
+    .card-body li {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.7;
+      margin-top: 4px;
+    }
+
+    .card-body strong { color: var(--text); font-weight: 600; }
+
+    .card-body h3 {
+      margin-top: 18px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: var(--mono);
+      letter-spacing: 0.03em;
+      color: var(--text);
+    }
+
+    .card-body blockquote {
+      margin-top: 12px;
+      padding: 10px 16px;
+      border-left: 3px solid var(--border-strong);
+      background: var(--bg);
+      border-radius: 0 4px 4px 0;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-family: var(--mono);
+      line-height: 1.6;
+    }
+
+    .image-list {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .image-item {
+      display: flex;
+      gap: 10px;
+      align-items: baseline;
+      font-size: 13px;
+    }
+
+    .image-num {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-faint);
+      width: 20px;
+      flex-shrink: 0;
+    }
+
+    .image-desc { color: var(--text-muted); }
+
+    /* no-results */
+    .no-results {
+      display: none;
+      text-align: center;
+      padding: 60px 20px;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text-faint);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      .layout {
+        grid-template-columns: 1fr;
+        padding: 24px 16px;
+        gap: 24px;
+      }
+      .sidebar { position: static; display: none; }
+      .topbar { padding: 10px 16px; }
+      .search-input { width: 140px; }
+    }
+
+    /* search highlight */
+    mark {
+      background: #fef08a;
+      color: inherit;
+      border-radius: 2px;
+      padding: 0 1px;
+    }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-title"><span>10 Bridge Challenge</span> — Site Evolution</div>
+  <div class="filter-row">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="design">Design</button>
+    <button class="filter-btn" data-filter="content">Content</button>
+    <button class="filter-btn" data-filter="feature">Feature</button>
+    <button class="filter-btn" data-filter="technical">Technical</button>
+    <button class="filter-btn" data-filter="meta">Meta</button>
+  </div>
+  <input class="search-input" type="text" placeholder="Search changes…" id="search">
+</div>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-label">Sections</div>
+    <ul class="sidebar-nav" id="sidebar-nav">
+      <li><a href="#current-state">Current State</a></li>
+      <li><a href="#beginning">The Beginning</a></li>
+      <li><a href="#initial-structure">Initial Structure</a></li>
+      <li><a href="#slider-polish">Slider Polish</a></li>
+      <li><a href="#hero-experiments">Hero Experiments</a></li>
+      <li><a href="#challenge-section">Challenge Section</a></li>
+      <li><a href="#punch-card">The Punch Card</a></li>
+      <li><a href="#bridge-description">Bridge Description</a></li>
+      <li><a href="#hero-tagline">Hero Tagline</a></li>
+      <li><a href="#images">Images</a></li>
+      <li><a href="#video">Video Integration</a></li>
+      <li><a href="#resources">Resources Section</a></li>
+      <li><a href="#favicon">Favicon</a></li>
+      <li><a href="#meta-tags">Meta Tags</a></li>
+      <li><a href="#domain">Domain</a></li>
+      <li><a href="#mobile">Mobile Fixes</a></li>
+      <li><a href="#footer">Footer</a></li>
+      <li><a href="#git">Git History</a></li>
+    </ul>
+  </aside>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- CURRENT STATE -->
+    <div class="current-state" id="current-state">
+      <div class="current-state-header">
+        <div class="dot"></div>
+        <h2>Current State</h2>
+      </div>
+      <div class="current-state-grid">
+        <div class="state-item">Hero with days counter, punch card (0/10), and four nav buttons</div>
+        <div class="state-item">Challenge section with intro video and four detail boxes</div>
+        <div class="state-item">Bridges section with descriptive text and 8-image slider</div>
+        <div class="state-item">Resources & Links section (currently one link)</div>
+        <div class="state-item">Latest section with expandable post cards</div>
+        <div class="state-item">Responsive design that works on mobile</div>
+        <div class="state-item">Custom favicon, meta tags, and .com domain</div>
+        <div class="state-item">Pure HTML/CSS/JS — no frameworks or build steps</div>
+      </div>
+    </div>
+
+    <!-- TIMELINE -->
+    <div class="timeline" id="timeline">
+
+      <!-- The Beginning -->
+      <div class="section-block" id="beginning">
+        <div class="timeline-marker"><div class="timeline-dot"></div></div>
+        <div class="section-card" data-category="content">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title">The Beginning</div>
+            <span class="card-tag tag-content">Content</span>
+            <span class="card-chevron">▼</span>
+          </div>
+          <div class="card-body">
+            <p>The project started with a simple idea: document the process of selling exactly 10 bridges. Not a business website, not a portfolio — a public record of a finite challenge with a clear end goal.</p>
+            <p>The site needed to be simple. Pure HTML, CSS, and JavaScript — no frameworks, no build steps. Something that could be edited directly and deployed instantly via GitHub to Netlify.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Initial Structure -->
+      <div class="section-block" id="initial-structure">
+        <div class="timeline-marker"><div class="timeline-dot"></div></div>
+        <div class="section-card" data-category="content">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title">Initial Structure</div>
+            <span class="card-tag tag-content">Content</span>
+            <span class="card-chevron">▼</span>
+          </div>
+          <div class="card-body">
+            <p>The first version established the core sections:</p>
+            <ol>
+              <li><strong>Hero</strong> — Title "10 Bridge Challenge" with a days-elapsed counter and navigation buttons</li>
+              <li><strong>The Challenge (01)</strong> — Four horizontal callout boxes: Objective, Definition of "Sold", Compensation, and Context</li>
+              <li><strong>The Bridges (02)</strong> — Description of what the bridges are, plus an image slider</li>
+              <li><strong>Latest (03)</strong> — A grid of expandable post cards for documenting progress</li>
+              <li><strong>Footer</strong> — Simple centered text</li>
+            </ol>
+            <p>The design language was established early: warm off-white background, subtle borders, Inter for body text, IBM Plex Mono for accents and numbers. Clean and understated.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slider Polish -->
+      <div class="section-block" id="slider-polish">
+        <div class="timeline-marker"><div class="timeline-dot"></div></div>
+        <div class="section-card" data-category="design">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title">Slider Polish</div>
+            <span class="card-tag tag-design">Design</span>
+            <span class="card-chevron">▼</span>
+          </div>
+          <div class="card-body">
+            <p>The image slider went through several iterations:</p>
+            <ul>
+              <li>Started with subtle, full-height arrow buttons with gradient scrims</li>
+              <li>Changed to <strong>circular arrow buttons</strong> (white background, border, centered on the image) for better visibility</li>
+              <li>Added <strong>dot indicators</strong> below the slider — count and jump between images</li>
+              <li>Added <strong>auto-advance</strong> (5 seconds) that pauses on hover or keyboard focus</li>
+              <li>Reduced corner rounding from 1rem to <strong>2px</strong> for a sharper look</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Experiments -->
+      <div class="section-block" id="hero-experiments">
+        <div class="timeline-marker"><div class="timeline-dot"></div></div>
+        <div class="section-card" data-category="design">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title">Hero Experiments</div>
+            <span class="card-tag tag-design">Design</span>
+            <span class="card-chevron">▼</span>
+          </div>
+          <div class="card-body">
+            <p>Tried adding a floating animated emoji (🌉) inspired by another site, but emoji rendering was inconsistent. Switched to an SVG bridge icon, but it didn't feel right. Ultimately removed — the hero was better without the visual clutter.</p>
+            <p>There was also a progress bar with numbered pips (1–10) that would fill as bridges sold. This was later replaced with the punch card concept.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Challenge Section -->
+      <div class="section-block" id="challenge-section">
+        <div class="timeline-marker"><div class="timeline-dot"></div></div>
+        <div class="section-card" data-category="design">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title">Challenge Section — Callout Boxes</div>
+            <span class="card-tag tag-design">Design</span>
+            <span class="card-chevron">▼</span>
+          </div>
+          <div class="card-body">
+            <p>Originally had five callout boxes including an "End Condition" box. Removed that one to keep things tighter — four boxes felt right.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Punch Card -->
+      <div class="section-block" id="punch-card">
+        <div class="timeline-marker"><div class="timeline-dot"></div></div>
+        <div class="section-card" data-category="feature">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title">The Punch Card</div>
+            <span class="card-tag tag-feature">Feature</span>
+            <span class="card-chevron">▼</span>
+          </div>
+          <div class="card-body">
+            <p>One of the more distinctive additions. Instead of a generic progress bar, the hero now features a <strong>punch card</strong> — 10 numbered squares arranged horizontally, like a loyalty card from a pizza place.</p>
+            <p>Each square is:</p>
+            <ul>
+              <li>A rounded rectangle with a dashed border (empty/unsold)</li>
+              <li>Numbered 1–10 in monospace font</li>
+              <li>When a bridge sells: solid green border and green background</li>
+            </ul>
+            <p>Sits between the "Days Elapsed" counter and the navigation buttons. Visually distinct from slider dots by being larger, numbered, and having a card-like container.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bridge Description -->
+      <div class="section-block" id="bridge-description">
+        <div class="timeline-marker"><div class="timeline-dot"></div></div>
+        <div class="section-card" data-category="content">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title">Bridge Description Rewrite</div>
+            <span class="card-tag tag-content">Content</span>
+            <span class="card-chevron">▼</span>
+          </div>
+          <div class="card-body">
+            <p>The bridges section text was rewritten to be more specific, replacing generic placeholder copy about "steel-and-timber vehicle bridges."</p>
+            <blockquote>"These are pre-engineered, prefabricated stress-laminated timber bridges. Each bridge is built as two deck panels (modules) that are delivered to the site and then set side-by-side and bolted together…"</blockquote>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Tagline -->
+      <div class="section-block" id="hero-tagline">
+        <div class="timeline-marker"><div class="timeline-dot"></div></div>
+        <div class="section-card" data-category="content">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title">Hero Tagline Iterations</div>
+            <span class="card-tag tag-content">Content</span>
+            <span class="card-chevron">▼</span>
+          </div>
+          <div class="card-body">
+            <p>The subheading went through several iterations:</p>
+            <ul>
+              <li>Started as something about a "finite experiment"</li>
+              <li>Changed to <strong>"One goal: sell 10 bridges."</strong> — direct and clear</li>
+              <li>Second line kept: "A record of what's learned between start and finish."</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Images -->
+      <div class="section-block" id="images">
+        <div class="timeline-marker"><div class="timeline-dot"></div></div>
+        <div class="section-card" data-category="content">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title">Images Added to Slider</div>
+            <span class="card-tag tag-content">Content</span>
+            <span class="card-chevron">▼</span>
+          </div>
+          <div class="card-body">
+            <p>The slider started with placeholder references. Real images were added, ordered deliberately to tell a story: action shot first, then fabrication, delivery, details, and finished products.</p>
+            <div class="image-list">
+              <div class="image-item"><span class="image-num">01</span><span class="image-desc">Skidder crossing a bridge (action shot)</span></div>
+              <div class="image-item"><span class="image-num">02</span><span class="image-desc">Bridge panel in progress during fabrication</span></div>
+              <div class="image-item"><span class="image-num">03</span><span class="image-desc">Panels loaded on a flatbed trailer</span></div>
+              <div class="image-item"><span class="image-num">04</span><span class="image-desc">Completed bridge panel</span></div>
+              <div class="image-item"><span class="image-num">05</span><span class="image-desc">Three-panel bridge installed on site</span></div>
+              <div class="image-item"><span class="image-num">06</span><span class="image-desc">Truck crossing a bridge on a job site</span></div>
+              <div class="image-item"><span class="image-num">07</span><span class="image-desc">Steel channel and bearing plate detail</span></div>
+              <div class="image-item"><span class="image-num">08</span><span class="image-desc">Single finished bridge panel ready for delivery</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Video -->
+      <div class="section-block" id="video">
+        <div class="timeline-marker"><div class="timeline-dot"></div></div>
+        <div class="section-card" data-category="feature">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title">Video Integration</div>
+            <span class="card-tag tag-feature">Feature</span>
+            <span class="card-chevron">▼</span>
+          </div>
+          <div class="card-body">
+            <p>An intro video was embedded in the Challenge section — a ~3:30 YouTube video of the creator talking directly to camera about the challenge.</p>
+            <p>Sits between the "01 The Challenge" header and the four detail boxes. Uses a responsive 16:9 wrapper with rounded corners to match the site's style.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resources -->
+      <div class="section-block" id="resources">
+        <div class="timeline-marker"><div class="timeline-dot"></div></div>
+        <div class="section-card" data-category="feature">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title">Resources & Links Section</div>
+            <span class="card-tag tag-feature">Feature</span>
+            <span class="card-chevron">▼</span>
+          </div>
+          <div class="card-body">
+            <p>A new section added: <strong>"03 Resources & Links"</strong> between The Bridges and Latest. This is where external links live. First resource: eandhbridges.com with a short description.</p>
+            <p>This moved the eandhbridges.com callout out of the Bridges section, keeping that section focused purely on describing what the bridges are. Latest was renumbered to <strong>04</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Favicon -->
+      <div class="section-block" id="favicon">
+        <div class="timeline-marker"><div class="timeline-dot"></div></div>
+        <div class="section-card" data-category="meta">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title">Favicon</div>
+            <span class="card-tag tag-meta">Meta</span>
+            <span class="card-chevron">▼</span>
+          </div>
+          <div class="card-body">
+            <p>A custom SVG favicon: dark rounded square with "10" in white. Font size had to be adjusted so both digits would render clearly at small sizes.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Meta Tags -->
+      <div class="section-block" id="meta-tags">
+        <div class="timeline-marker"><div class="timeline-dot"></div></div>
+        <div class="section-card" data-category="technical">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title">Open Graph & Meta Tags</div>
+            <span class="card-tag tag-technical">Technical</span>
+            <span class="card-chevron">▼</span>
+          </div>
+          <div class="card-body">
+            <p>Added Open Graph and Twitter Card meta tags for social sharing:</p>
+            <ul>
+              <li>Title: "10 Bridge Challenge"</li>
+              <li>Description about selling 10 bridges and documenting the process</li>
+              <li>Image reference for social previews</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Domain -->
+      <div class="section-block" id="domain">
+        <div class="timeline-marker"><div class="timeline-dot"></div></div>
+        <div class="section-card" data-category="technical">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title">Custom Domain</div>
+            <span class="card-tag tag-technical">Technical</span>
+            <span class="card-chevron">▼</span>
+          </div>
+          <div class="card-body">
+            <p>Originally hosted at <code>10-bridge-challenge.netlify.app</code>. Upgraded to the custom domain <strong>10bridgechallenge.com</strong> — cleaner to say out loud and easier to share.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile -->
+      <div class="section-block" id="mobile">
+        <div class="timeline-marker"><div class="timeline-dot"></div></div>
+        <div class="section-card" data-category="technical">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title">Mobile Fixes</div>
+            <span class="card-tag tag-technical">Technical</span>
+            <span class="card-chevron">▼</span>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>The "SCROLL" indicator in the hero was overlapping with nav buttons on mobile — now hidden on screens under 640px</li>
+              <li>Punch card squares shrink slightly on mobile so all 10 fit comfortably</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="section-block" id="footer">
+        <div class="timeline-marker"><div class="timeline-dot"></div></div>
+        <div class="section-card" data-category="design">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title">Footer</div>
+            <span class="card-tag tag-design">Design</span>
+            <span class="card-chevron">▼</span>
+          </div>
+          <div class="card-body">
+            <p>Simple and minimal:</p>
+            <ul>
+              <li>"10 Bridge Challenge"</li>
+              <li>"Website built with Claude Code!" (with link)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Git History -->
+      <div class="section-block" id="git">
+        <div class="timeline-marker"><div class="timeline-dot"></div></div>
+        <div class="section-card" data-category="technical">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title">Git History & Deployment</div>
+            <span class="card-tag tag-technical">Technical</span>
+            <span class="card-chevron">▼</span>
+          </div>
+          <div class="card-body">
+            <p>The site is version-controlled with commits for each meaningful change. The repository lives on GitHub and auto-deploys to Netlify on push.</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /timeline -->
+
+    <div class="no-results" id="no-results">No sections match your filter.</div>
+  </main>
+</div>
+
+<script>
+  // Snapshot each card's initial state, plain text, and body HTML at load time
+  const initialOpenState = new Map();
+  const cardTextContent = new Map();
+  const cardBodyHTML = new Map();
+  document.querySelectorAll('.section-card').forEach(card => {
+    initialOpenState.set(card, card.classList.contains('open'));
+    cardTextContent.set(card, card.textContent.toLowerCase());
+    const body = card.querySelector('.card-body');
+    if (body) cardBodyHTML.set(card, body.innerHTML);
+  });
+
+  // ── TOGGLE CARD ──
+  function toggleCard(header) {
+    const card = header.closest('.section-card');
+    card.classList.toggle('open');
+    // Keep snapshot in sync so search-clear restores the latest manual state
+    initialOpenState.set(card, card.classList.contains('open'));
+  }
+
+  // ── FILTER ──
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  let activeFilter = 'all';
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.dataset.filter;
+      applyFilters();
+    });
+  });
+
+  // ── SEARCH ──
+  const searchInput = document.getElementById('search');
+  let searchTerm = '';
+
+  searchInput.addEventListener('input', () => {
+    searchTerm = searchInput.value.trim().toLowerCase();
+    applyFilters();
+  });
+
+  function applyFilters() {
+    const cards = document.querySelectorAll('.section-card');
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+      const cat = card.dataset.category;
+      // Use pre-stored plain text so highlight marks never corrupt the search
+      const text = cardTextContent.get(card);
+
+      const matchesFilter = activeFilter === 'all' || cat === activeFilter;
+      const matchesSearch = !searchTerm || text.includes(searchTerm);
+
+      if (matchesFilter && matchesSearch) {
+        card.classList.remove('hidden', 'search-dim');
+        if (searchTerm) {
+          // Auto-open matching cards so the highlight is visible
+          card.classList.add('open');
+          highlightText(card, searchTerm);
+        } else {
+          // Search cleared — restore original open/closed state
+          card.classList.toggle('open', initialOpenState.get(card));
+          clearHighlights(card);
+        }
+        visibleCount++;
+      } else {
+        card.classList.add('hidden');
+        card.classList.remove('search-dim');
+        clearHighlights(card);
+      }
+    });
+
+    document.getElementById('no-results').style.display = visibleCount === 0 ? 'block' : 'none';
+  }
+
+  function highlightText(card, term) {
+    const body = card.querySelector('.card-body');
+    if (!body || !cardBodyHTML.has(card)) return;
+    // Always restore original HTML first so we're never searching marked-up text
+    body.innerHTML = cardBodyHTML.get(card);
+    // Escape term for use in regex
+    const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(${escaped})`, 'gi');
+    body.innerHTML = body.innerHTML.replace(regex, '<mark>$1</mark>');
+  }
+
+  function clearHighlights(card) {
+    const body = card.querySelector('.card-body');
+    if (!body || !cardBodyHTML.has(card)) return;
+    body.innerHTML = cardBodyHTML.get(card);
+  }
+
+  // ── SIDEBAR ACTIVE STATE ──
+  const sections = document.querySelectorAll('.section-block, #current-state');
+  const navLinks = document.querySelectorAll('.sidebar-nav a');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
