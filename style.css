@@ -485,28 +485,53 @@ a:hover {
   margin-top: var(--sp-6);
 }
 
-.bridges__cta {
+/* -------------------------------------------
+   7b. RESOURCES SECTION
+   ------------------------------------------- */
+.resources__list {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: var(--sp-4);
-  margin-top: var(--sp-8);
-  margin-bottom: var(--sp-8);
+}
+
+.resource-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-4);
   padding: var(--sp-5) var(--sp-6);
   background: var(--clr-surface);
   border: 1px solid var(--clr-border-light);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
+  transition: all var(--duration) var(--ease);
+}
+
+.resource-item:hover {
+  border-color: var(--clr-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.resource-item svg {
+  flex-shrink: 0;
+  color: var(--clr-text-faint);
+  margin-top: 2px;
+}
+
+.resource-item__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.resource-item__content a {
+  font-weight: 600;
+  font-size: var(--fs-base);
+}
+
+.resource-item__content p {
   font-size: var(--fs-sm);
   color: var(--clr-text-muted);
   line-height: 1.5;
-}
-
-.bridges__cta svg {
-  flex-shrink: 0;
-  color: var(--clr-text-faint);
-}
-
-.bridges__cta a {
-  font-weight: 500;
+  margin: 0;
 }
 
 /* Slider */
